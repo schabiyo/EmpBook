@@ -1,0 +1,26 @@
+spring.profiles.active: local
+spring.data.rest.base-path: /api
+
+---
+spring:
+  profiles: local
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+  jackson:
+    date-format: "YYYY-MM-dd"
+    serialization:
+      write_dates_as_timestamps: true
+
+---
+spring:
+  profiles: atlas
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+  jackson:
+    date-format: "YYYY-MM-dd"
+    serialization:
+      write_dates_as_timestamps: true
