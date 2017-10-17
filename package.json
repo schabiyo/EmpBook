@@ -1,7 +1,7 @@
 {
-  "name": "fdealz-ui",
+  "name": "empbook",
   "version": "0.1.0",
-  "description": "EmpMgr 2.0",
+  "description": "EmpBook 2.0",
   "repository": {
     "type": "git",
     "url": "git@github.com:schabiyo/empmgr.git"
@@ -22,8 +22,7 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "rest": "^1.3.1",
-    "webpack": "^1.12.2",
-    "react-search-box": "0.0.4"
+    "webpack": "^1.12.2"
   },
   "scripts": {
     "watch": "webpack --watch -d"

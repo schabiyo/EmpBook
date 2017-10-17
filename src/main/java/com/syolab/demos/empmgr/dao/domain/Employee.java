@@ -3,6 +3,8 @@ package com.syolab.demos.empmgr.dao.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.Decimal128;
 import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Property;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.TextIndexed;
@@ -10,14 +12,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
+//
+//
 @Document
+//@Entity("employee")
 public class Employee extends BaseEntity {
 
+    // @org.mongodb.morphia.annotations.Id
+    // @Property("_id")
     @Id
     private ObjectId employeeId;
     private EmployeeStatus employeeStatus;
-    @TextIndexed
-    String firstName;
+    @TextIndexed String firstName;
     private String middleName;
     @TextIndexed String lastName;
     private String jobTitle;

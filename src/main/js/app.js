@@ -4,17 +4,19 @@ const React = require('react');
 const ReactDOM = require('react-dom')
 const when = require('when');
 const client = require('./client');
-
 const follow = require('./follow'); // function to hop multiple links by "rel"
 
+
 const root = '/api';
+const searchRoot = '/api/employees/search';
 
 class App extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {employees: [], attributes: [], pageSize: 10, links: {}};
+		this.state = {employees: [], attributes: [], pageSize: 10, searchBox: '', links: {}};
 		this.updatePageSize = this.updatePageSize.bind(this);
+		this.updateSearchBox = this.updateSearchBox.bind(this);
 		this.onCreate = this.onCreate.bind(this);
 		this.onUpdate = this.onUpdate.bind(this);
 		this.onDelete = this.onDelete.bind(this);
@@ -49,10 +51,35 @@ class App extends React.Component {
 				employees: employees,
 				attributes: Object.keys(this.schema.properties),
 				pageSize: pageSize,
+				searchBox: searchBox,
 				links: this.links
 			});
 		});
 	}
+
+	// tag::follow-2[]
+    searchFromServer(searchBox,pageSize) {
+    	follow(client, searchRoot, [
+    			{rel: 'findEverything', params: {criteria: searchBox,size: pageSize}}]
+    	).then(employeeCollection => {
+    		return employeeCollection.entity._embedded.employees.map(employee =>
+    				client({
+    					method: 'GET',
+    					path: employee._links.self.href
+    				})
+    		);
+    	}).then(employeePromises => {
+    		return when.all(employeePromises);
+    	}).done(employees => {
+    		this.setState({
+    			employees: employees,
+    			attributes: Object.keys(this.schema.properties),
+    			pageSize: pageSize,
+    			searchBox: searchBox,
+    			links: this.links
+    		});
+    	});
+    }
 	// end::follow-2[]
 
 	// tag::create[]
@@ -126,6 +153,7 @@ class App extends React.Component {
 			this.setState({
 				employees: employees,
 				attributes: Object.keys(this.schema.properties),
+				searchBox: this.state.searchBox,
 				pageSize: this.state.pageSize,
 				links: this.links
 			});
@@ -140,6 +168,13 @@ class App extends React.Component {
 		}
 	}
 	// end::update-page-size[]
+	updateSearchBox(searchBox, pageSize) {
+    	if (searchBox !== this.state.searchBox) {
+    	    if(searchBox.length > 3){  //Check for at least 2 caracters
+    		    this.searchFromServer(searchBox,pageSize);
+    		}
+    	}
+    }
 
 	// tag::follow-1[]
 	componentDidMount() {
@@ -154,11 +189,13 @@ class App extends React.Component {
 				<EmployeeList employees={this.state.employees}
 							  links={this.state.links}
 							  pageSize={this.state.pageSize}
+							  searchBox={this.state.searchBox}
 							  attributes={this.state.attributes}
 							  onNavigate={this.onNavigate}
 							  onUpdate={this.onUpdate}
 							  onDelete={this.onDelete}
-							  updatePageSize={this.updatePageSize}/>
+							  updatePageSize={this.updatePageSize}
+							  updateSearchBox={this.updateSearchBox}/>
 			</div>
 		)
 	}
@@ -178,12 +215,17 @@ class CreateDialog extends React.Component {
 		newEmployee["firstName"] = ReactDOM.findDOMNode(this.refs["firstName"]).value.trim();
 		newEmployee["middleName"] = ReactDOM.findDOMNode(this.refs["middleName"]).value.trim();
 		newEmployee["lastName"] = ReactDOM.findDOMNode(this.refs["lastName"]).value.trim();
+		newEmployee["email"] = ReactDOM.findDOMNode(this.refs["email"]).value.trim();
+		newEmployee["jobTitle"] = ReactDOM.findDOMNode(this.refs["jobTitle"]).value.trim();
+
 
 
 		this.props.onCreate(newEmployee);
 		ReactDOM.findDOMNode(this.refs["firstName"]).value = '';
         ReactDOM.findDOMNode(this.refs["middleName"]).value = '';
         ReactDOM.findDOMNode(this.refs["lastName"]).value = '';
+        ReactDOM.findDOMNode(this.refs["email"]).value = '';
+        ReactDOM.findDOMNode(this.refs["jobTitle"]).value = '';
 
 		window.location = "#";
 	}
@@ -214,6 +256,12 @@ class CreateDialog extends React.Component {
                         	<p>
                    				<input type="text" placeholder={"lastName"} ref={"lastName"} className="field" />
                             </p>
+                            <p>
+                                <input type="text" placeholder={"email"} ref={"email"} className="field" />
+                             </p>
+                             <p>
+                                <input type="text" placeholder={"jobTitle"} ref={"jobTitle"} className="field" />
+                             </p>
 							<button onClick={this.handleSubmit}>Create</button>
 						</form>
 					</div>
@@ -238,6 +286,8 @@ class UpdateDialog extends React.Component {
 		updatedEmployee["firstName"] = ReactDOM.findDOMNode(this.refs["firstName"]).value.trim();
 		updatedEmployee["middleName"] = ReactDOM.findDOMNode(this.refs["middleName"]).value.trim();
 		updatedEmployee["lastName"] = ReactDOM.findDOMNode(this.refs["lastName"]).value.trim();
+		updatedEmployee["email"] = ReactDOM.findDOMNode(this.refs["email"]).value.trim();
+        updatedEmployee["employeeStatus"] = ReactDOM.findDOMNode(this.refs["employeeStatus"]).value.trim();
 
 		//updatedEmployee[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
 
@@ -276,8 +326,12 @@ class UpdateDialog extends React.Component {
                             <input type="text" placeholder={"lastName"}
                                                        defaultValue={this.props.employee.entity.lastName}
                                						   ref={"lastName"} className="field" />
-
-
+                            <input type="text" placeholder={"email"}
+                                                       defaultValue={this.props.employee.entity.email}
+                                                       ref={"email"} className="field" />
+                            <input type="text" placeholder={"employeeStatus"}
+                                                       defaultValue={this.props.employee.entity.employeeStatus}
+                                                       ref={"employeeStatus"} className="field" />
 
 							<button onClick={this.handleSubmit}>Update</button>
 						</form>
@@ -300,6 +354,7 @@ class EmployeeList extends React.Component {
 		this.handleNavNext = this.handleNavNext.bind(this);
 		this.handleNavLast = this.handleNavLast.bind(this);
 		this.handleInput = this.handleInput.bind(this);
+		this.handleSearchInput = this.handleSearchInput.bind(this);
 	}
 
 	// tag::handle-page-size-updates[]
@@ -312,6 +367,16 @@ class EmployeeList extends React.Component {
 			ReactDOM.findDOMNode(this.refs.pageSize).value = pageSize.substring(0, pageSize.length - 1);
 		}
 	}
+
+	handleSearchInput(e) {
+    	e.preventDefault();
+    	var searchBox = ReactDOM.findDOMNode(this.refs.searchBox).value;
+    	var pageSize = ReactDOM.findDOMNode(this.refs.pageSize).value;
+
+        this.props.updateSearchBox(searchBox,pageSize);
+
+
+    	}
 	// end::handle-page-size-updates[]
 
 	// tag::handle-nav[]
@@ -334,6 +399,7 @@ class EmployeeList extends React.Component {
 	// end::handle-nav[]
 	// tag::employee-list-render[]
 	render() {
+
 		var employees = this.props.employees.map(employee =>
 				<Employee key={employee.entity._links.self.href}
 						  employee={employee}
@@ -358,8 +424,38 @@ class EmployeeList extends React.Component {
 
 		return (
 			<div>
-                <input ref="pageSize" defaultValue={this.props.pageSize} onInput={this.handleInput}/>
-				<table id="employeesTable" class="table table-striped">
+			    <div>
+			        <div>
+			            <table cellSpacing="0" cellPadding="0" style={{width: '100%'}}>
+			                <tbody>
+			                <tr>
+                                <td style={{width: '100px', border: 'none'}}>Show</td>
+                                <td style={{width: '100px', border: 'none'}}>
+                                    <input ref="pageSize" defaultValue={this.props.pageSize} onInput={this.handleInput}/>
+                                </td>
+                                <td style={{width: '100px',border: 'none'}}>entries</td>
+                                <td style={{width: '100%',border: 'none'}}>
+                                    <div style={{width: '100%'}} className="mv0xzc">
+                                        <div className="g20x4k">
+                                           <input ref="searchBox" className="searchInput" defaultValue={this.props.searchBox} id="searchBox" onInput={this.handleSearchInput} placeholder="Search by First or Last Name" />
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style={{width: '100px', border: 'none'}}>
+                                     <div style={{width: '100px', "zIndex": 2, border: 'none'}} className="searchButtonOutter">
+                                           <button type="button" className="searchButton" ref="searchButton" onClick={this.props.handleSearchInput}>
+                                                 <span>Search</span>
+                                           </button>
+                                      </div>
+                                </td>
+			                </tr>
+			                </tbody>
+			            </table>
+			        </div>
+
+                </div>
+
+				<table id="employeesTable" style={{width: '100%'}} className="table table-striped">
 					<tbody>
 						<tr>
 							<th>First Name</th>
@@ -412,7 +508,7 @@ class Employee extends React.Component {
 								  onUpdate={this.props.onUpdate}/>
 				</td>
 				<td>
-					<button onClick={this.handleDelete}>Fire</button>
+					<button onClick={this.handleDelete}>Delete</button>
 				</td>
 			</tr>
 		)

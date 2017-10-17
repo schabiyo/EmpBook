@@ -7,16 +7,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.GeoResult;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
+
+import org.springframework.data.repository.query.Param;
 import reactor.core.publisher.Flux;
 
-public interface EmployeeRepository extends PagingAndSortingRepository<Employee, String>,
-        CustomizedEmployeeRepository {
+public interface EmployeeRepository extends PagingAndSortingRepository<Employee, String> {
+
     //List all employees by their status
-    List<Employee> findByEmployeeStatus(EmployeeStatus employeeStatus);
+    List<Employee> findByEmployeeStatus(@Param("status") EmployeeStatus employeeStatus);
     // Paginate over a full-text search result
-    Page<Employee> findAllBy(TextCriteria criteria, Pageable pageable);
-    // {'geoNear' : 'location', 'near' : [x, y] }
-    Flux<GeoResult<Employee>> findByLocationNear(Point location);
+    @Query("{$text: {$search: ?0}}")
+    Page<Employee> findEverything(@Param("criteria") String criteria, Pageable pageable);
+
+    Page<Employee> findByFirstNameOrLastName(String what, TextCriteria criteria, Pageable pageable);
 }

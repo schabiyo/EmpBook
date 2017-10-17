@@ -1,18 +1,40 @@
 package com.syolab.demos.empmgr.dao.morphia;
 
+import com.mongodb.MongoClient;
+import com.syolab.demos.empmgr.dao.domain.Employee;
+import org.mongodb.morphia.query.FindOptions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoCollection;
-import static com.mongodb.client.model.Filters.eq;
-import org.bson.Document;
-import java.util.ArrayList;
-import java.util.Date;
+import org.mongodb.morphia.*;
 import java.util.List;
 
 
 @Service
 public class MorphiaEmployeeRepository {
 
+    @Value("${spring.data.mongodb.host}")
+    private String host = "localhost";
 
+    @Value("${spring.data.mongodb.port}")
+    private Integer port = 27017;
 
+    final Datastore datastore;
+
+    @Autowired
+    public MorphiaEmployeeRepository() {
+        final Morphia morphia = new Morphia();
+        morphia.mapPackage("com.syolab.demos.empmgr.dao.domain");
+        final MongoClient empDatabaseClient = new MongoClient(host, port);
+        datastore = morphia.createDatastore(empDatabaseClient, "employees");
+        datastore.ensureIndexes();
+    }
+
+    public List<Employee> findAll(Pageable pageable) {
+        List<Employee> emps = datastore.createQuery(Employee.class)
+                .asList(new FindOptions().skip(pageable.getPageSize()*(pageable.getPageNumber()-1))
+                    .limit(pageable.getPageSize()));
+        return emps;
+    }
 }

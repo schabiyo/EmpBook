@@ -8,8 +8,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>EmpMgr</name>
-	<description>Emp Mgr : Demo ReactJS + Spring Data REST + MongoDB </description>
+	<name>EmpBook</name>
+	<description>Emp Book : Demo ReactJS + Spring Data REST + MongoDB </description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -25,6 +25,11 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.mongodb.morphia</groupId>
+			<artifactId>morphia</artifactId>
+			<version>1.3.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cache</artifactId>

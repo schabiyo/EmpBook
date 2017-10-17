@@ -27,11 +27,6 @@ public class NativeDriverEmployeeRepository {
         empCollection = empDatabaseClient.getDatabase("employees").getCollection("employee");
     }
 
-    public List<Document> findAll() {
-        return empCollection.find().limit(10)
-                .into(new ArrayList<Document>());
-    }
-
     public List<Document> findAll(Pageable pageable) {
         return empCollection.find().skip(pageable.getPageSize()*(pageable.getPageNumber()-1)).limit(pageable.getPageSize())
                 .into(new ArrayList<Document>());
