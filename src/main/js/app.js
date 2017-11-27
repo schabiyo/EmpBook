@@ -500,7 +500,7 @@ class Employee extends React.Component {
 				<td>{this.props.employee.entity.lastName}</td>
 				<td>{this.props.employee.entity.email}</td>
 				<td>{this.props.employee.entity.jobTitle}</td>
-				<td>{this.props.employee.entity.salary}</td>
+				<td>{this.props.employee.entity.salary.low} $</td>
 				<td>{this.props.employee.entity.employeeStatus}</td>
 				<td>
 					<UpdateDialog employee={this.props.employee}

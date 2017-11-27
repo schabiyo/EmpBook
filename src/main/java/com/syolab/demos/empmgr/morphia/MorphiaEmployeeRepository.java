@@ -1,7 +1,6 @@
-package com.syolab.demos.empmgr.dao.morphia;
+package com.syolab.demos.empmgr.morphia;
 
 import com.mongodb.MongoClient;
-import com.syolab.demos.empmgr.dao.domain.Employee;
 import org.mongodb.morphia.query.FindOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,5 +35,9 @@ public class MorphiaEmployeeRepository {
                 .asList(new FindOptions().skip(pageable.getPageSize()*(pageable.getPageNumber()-1))
                     .limit(pageable.getPageSize()));
         return emps;
+    }
+
+    public void createEmployee(Employee  emp) {
+        datastore.save(emp);
     }
 }

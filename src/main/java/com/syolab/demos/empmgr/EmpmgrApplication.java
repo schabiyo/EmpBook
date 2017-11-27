@@ -1,6 +1,6 @@
 package com.syolab.demos.empmgr;
 
-import com.syolab.demos.empmgr.dao.spring.DatabaseInitializer;
+import com.syolab.demos.empmgr.spring.DatabaseInitializer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

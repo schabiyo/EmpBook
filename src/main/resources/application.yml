@@ -1,4 +1,4 @@
-spring.profiles.active: local
+spring.profiles.active: atlas
 spring.data.rest.base-path: /api
 
 ---
@@ -18,8 +18,8 @@ spring:
   profiles: atlas
   data:
     mongodb:
-      host: 127.0.0.1
-      port: 27017
+      uri: mongodb://mongod3.eastus.cloudapp.azure.com:27000,mongod2.eastus.cloudapp.azure.com:27000,mongod1.eastus.cloudapp.azure.com:27000/test?ssl=false&replicaSet=rs1
+   #   uri: mongodb://demouser:zy43tt36@cluster0-shard-00-00-bepo4.mongodb.net:27017,cluster0-shard-00-01-bepo4.mongodb.net:27017,cluster0-shard-00-02-bepo4.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin
   jackson:
     date-format: "YYYY-MM-dd"
     serialization:

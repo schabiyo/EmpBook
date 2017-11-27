@@ -1,4 +1,4 @@
-package com.syolab.demos.empmgr.dao.driver;
+package com.syolab.demos.empmgr.NativeDriver;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -30,5 +30,9 @@ public class NativeDriverEmployeeRepository {
     public List<Document> findAll(Pageable pageable) {
         return empCollection.find().skip(pageable.getPageSize()*(pageable.getPageNumber()-1)).limit(pageable.getPageSize())
                 .into(new ArrayList<Document>());
+    }
+
+    public void create(Document doc){
+        empCollection.insertOne(doc);
     }
 }
