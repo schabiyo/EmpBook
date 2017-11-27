@@ -9,7 +9,7 @@ Experience a new way of managing employees with ReactJS, Spring Boot and MongoDB
 You need the following:
 
 - **Maven**
-- **MongoDB** 
+- **MongoDB** running on localhost on port 27010
 
 
 ### Step 2 - Run the App
