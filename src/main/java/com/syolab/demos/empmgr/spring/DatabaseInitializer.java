@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile("local")
+//@Profile("local")
 public class DatabaseInitializer {
 
     private EmployeeRepository employeeRepository;
@@ -31,20 +31,20 @@ public class DatabaseInitializer {
                 "CA", "San Francisco", "United States", 94103);
 
         // Create a new employee
-        Employee emp1 = new Employee("Sani","Tobre", "Chabi Yo", "sani.chabi-yo@mongodb.com", "Solutions Architect", new Decimal128(51000), "@chabiyo");
-        Employee emp2 = new Employee("Jonathan", null, "Tellier", "jtellier@syolab.io","Developer",new Decimal128(48000));
-        Employee emp3 = new Employee("Pierre", "Carl", "Belanger","pbelanger@syolab.io","Finance Manager",new Decimal128(120500));
-        Employee emp4 = new Employee("Annette", "Claudine", "Gagnon-Letailleur","agagnon@syolab.io","Marketing Manager",new Decimal128(110000));
-        Employee emp5 = new Employee("Serge", null, "Poueme","spoueme@syolab.io","Solutions Architect",new Decimal128(51000));
-        Employee emp6 = new Employee("Martin", "Donald", "PetitCoeur","mpetitcoeur@syolab.io","Developer", new Decimal128(48000),EmployeeStatus.FIRED);
-        Employee emp7 = new Employee("Sam", null, "Harley","sharley@syolab.io","Solutions Architect",new Decimal128(51000),EmployeeStatus.FIRED);
-        Employee emp8 = new Employee("Abike", "Samia", "Yacoubou","ayacoubou@syolab.io","Developer",new Decimal128(49000));
-        Employee emp9 = new Employee("Siaka", null, "Baro","sbaro@syolab.io","Software Engineer",new Decimal128(50000));
-        Employee emp10 = new Employee("Thierry", "Caillou", "Dorion","tdorion@syolab.io","QA Engineer",new Decimal128(35000),EmployeeStatus.FIRED);
-        Employee emp11 = new Employee("Eric", "Mathieu", "Legaillard","elegaillard@syolab.io","DevOps Engineer",new Decimal128(51000));
-        Employee emp12 = new Employee("Judicael", "Gentil", "Zounmevo","jzounmevo@syolab.io","Solutions Architect",new Decimal128(51000));
-        Employee emp13 = new Employee("Parfait", "Legrand", "Dessouassi","pdessouassi@syolab.io","CEO",new Decimal128(550000));
-        Employee emp14 = new Employee("Liam", "Akanni", "Chabi Yo","lchabiyo@syolab.io","CTO",new Decimal128(350000));
+        Employee emp1 = new Employee("Sani","Tobre", "Chabi Yo", "sani.chabi-yo@mongodb.com", "Solutions Architect", new Double(51000), "@chabiyo", "+15142902389");
+        Employee emp2 = new Employee("Jonathan", null, "Tellier", "jtellier@syolab.io","Developer",new Double(48000));
+        Employee emp3 = new Employee("Pierre", "Carl", "Belanger","pbelanger@syolab.io","Finance Manager",new Double(120500));
+        Employee emp4 = new Employee("Annette", "Claudine", "Gagnon-Letailleur","agagnon@syolab.io","Marketing Manager",new Double(110000));
+        Employee emp5 = new Employee("Serge", null, "Poueme","spoueme@syolab.io","Solutions Architect",new Double(51000));
+        Employee emp6 = new Employee("Martin", "Donald", "PetitCoeur","mpetitcoeur@syolab.io","Developer", new Double(48000),EmployeeStatus.FIRED);
+        Employee emp7 = new Employee("Sam", null, "Harley","sharley@syolab.io","Solutions Architect",new Double(51000),EmployeeStatus.FIRED);
+        Employee emp8 = new Employee("Abike", "Samia", "Yacoubou","ayacoubou@syolab.io","Developer",new Double(49000));
+        Employee emp9 = new Employee("Siaka", null, "Baro","sbaro@syolab.io","Software Engineer",new Double(50000));
+        Employee emp10 = new Employee("Thierry", "Caillou", "Dorion","tdorion@syolab.io","QA Engineer",new Double(35000),EmployeeStatus.FIRED);
+        Employee emp11 = new Employee("Eric", "Mathieu", "Legaillard","elegaillard@syolab.io","DevOps Engineer",new Double(51000));
+        Employee emp12 = new Employee("Judicael", "Gentil", "Zounmevo","jzounmevo@syolab.io","Solutions Architect",new Double(51000));
+        Employee emp13 = new Employee("Parfait", "Legrand", "Dessouassi","pdessouassi@syolab.io","CEO",new Double(550000));
+        Employee emp14 = new Employee("Liam", "Akanni", "Chabi Yo","lchabiyo@syolab.io","CTO",new Double(350000));
         emp1.setAddress(address1);
         emp2.setAddress(address2);
         emp3.setAddress(address1);

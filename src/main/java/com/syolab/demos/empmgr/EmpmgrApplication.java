@@ -19,7 +19,7 @@ public class EmpmgrApplication {
 	}
 
 	@Bean
-	@Profile("local")
+	//@Profile("local")
 	CommandLineRunner commandLineRunner(DatabaseInitializer databaseInitializer) {
 		return args -> {
 			// Initialize the database for end to end integration testing

@@ -1,6 +1,7 @@
 package com.syolab.demos.empmgr.spring;
 
 import com.mongodb.*;
+import org.bson.types.Decimal128;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,15 +17,19 @@ import java.util.List;
 @Configuration
 public class MongoConfiguration extends AbstractMongoConfiguration {
 
-    @Value("${spring.data.mongodb.host}")
+    @Value("${spring.data.mongodb.uri}")
+    private String uri;
+
+    /*@Value("${spring.data.mongodb.host}")
     private String host;
 
     @Value("${spring.data.mongodb.port}")
     private Integer port;
-
+*/
     @Bean
     public Mongo mongo() throws Exception {
-        return new MongoClient(host, port);
+        MongoClientURI clientUri = new MongoClientURI(uri);
+        return new MongoClient(clientUri);
     }
 
 
@@ -44,6 +49,7 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
         List<Converter<?, ?>> converterList = new ArrayList<>();
         converterList.add(new LongToDateTimeConverter());
         converterList.add(new StringToDateTimeConverter());
+        converterList.add(new StringToDecimal128TimeConverter());
         return new CustomConversions(converterList);
     }
 
@@ -66,6 +72,16 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
                 return null;
             }
             return new Date(source);
+        }
+    }
+    @ReadingConverter
+    static class StringToDecimal128TimeConverter implements Converter<String, Decimal128> {
+        @Override
+        public Decimal128 convert(String source) {
+            if (source == null) {
+                return null;
+            }
+            return new Decimal128(Integer.valueOf(source));
         }
     }
 }

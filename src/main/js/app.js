@@ -217,6 +217,9 @@ class CreateDialog extends React.Component {
 		newEmployee["lastName"] = ReactDOM.findDOMNode(this.refs["lastName"]).value.trim();
 		newEmployee["email"] = ReactDOM.findDOMNode(this.refs["email"]).value.trim();
 		newEmployee["jobTitle"] = ReactDOM.findDOMNode(this.refs["jobTitle"]).value.trim();
+		newEmployee["salary"] = ReactDOM.findDOMNode(this.refs["salary"]).value.trim();
+		newEmployee["twitterId"] = ReactDOM.findDOMNode(this.refs["twitterId"]).value.trim();
+		newEmployee["cell"] = ReactDOM.findDOMNode(this.refs["cell"]).value.trim();
 
 
 
@@ -226,6 +229,9 @@ class CreateDialog extends React.Component {
         ReactDOM.findDOMNode(this.refs["lastName"]).value = '';
         ReactDOM.findDOMNode(this.refs["email"]).value = '';
         ReactDOM.findDOMNode(this.refs["jobTitle"]).value = '';
+        ReactDOM.findDOMNode(this.refs["salary"]).value = '';
+        ReactDOM.findDOMNode(this.refs["cell"]).value = '';
+        ReactDOM.findDOMNode(this.refs["twitterId"]).value = '';
 
 		window.location = "#";
 	}
@@ -262,6 +268,15 @@ class CreateDialog extends React.Component {
                              <p>
                                 <input type="text" placeholder={"jobTitle"} ref={"jobTitle"} className="field" />
                              </p>
+                             <p>
+                                <input type="text" placeholder={"salary"} ref={"salary"} className="field" />
+                             </p>
+                             <p>
+                                <input type="text" placeholder={"cell"} ref={"cell"} className="field" />
+                             </p>
+                             <p>
+                                  <input type="text" placeholder={"twitterId"} ref={"twitterId"} className="field" />
+                             </p>
 							<button onClick={this.handleSubmit}>Create</button>
 						</form>
 					</div>
@@ -288,6 +303,7 @@ class UpdateDialog extends React.Component {
 		updatedEmployee["lastName"] = ReactDOM.findDOMNode(this.refs["lastName"]).value.trim();
 		updatedEmployee["email"] = ReactDOM.findDOMNode(this.refs["email"]).value.trim();
         updatedEmployee["employeeStatus"] = ReactDOM.findDOMNode(this.refs["employeeStatus"]).value.trim();
+        updatedEmployee["salary"] = ReactDOM.findDOMNode(this.refs["salary"]).value.trim();
 
 		//updatedEmployee[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
 
@@ -332,6 +348,9 @@ class UpdateDialog extends React.Component {
                             <input type="text" placeholder={"employeeStatus"}
                                                        defaultValue={this.props.employee.entity.employeeStatus}
                                                        ref={"employeeStatus"} className="field" />
+                            <input type="text" placeholder={"salary"}
+                                                       defaultValue={this.props.employee.entity.salary}
+                                                       ref={"salary"} className="field" />
 
 							<button onClick={this.handleSubmit}>Update</button>
 						</form>
@@ -500,7 +519,7 @@ class Employee extends React.Component {
 				<td>{this.props.employee.entity.lastName}</td>
 				<td>{this.props.employee.entity.email}</td>
 				<td>{this.props.employee.entity.jobTitle}</td>
-				<td>{this.props.employee.entity.salary.low} $</td>
+				<td>{this.props.employee.entity.salary} $</td>
 				<td>{this.props.employee.entity.employeeStatus}</td>
 				<td>
 					<UpdateDialog employee={this.props.employee}

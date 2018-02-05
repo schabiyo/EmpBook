@@ -15,10 +15,10 @@ import java.util.List;
 public class NativeDriverEmployeeRepository {
 
     private final MongoCollection<Document> empCollection;
-    @Value("${spring.data.mongodb.host}")
+    //@Value("${spring.data.mongodb.host}")
     private String host = "localhost";
 
-    @Value("${spring.data.mongodb.port}")
+    //@Value("${spring.data.mongodb.port}")
     private Integer port = 27017;
 
     @Autowired

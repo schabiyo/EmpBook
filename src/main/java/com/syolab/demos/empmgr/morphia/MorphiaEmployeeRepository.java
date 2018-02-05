@@ -13,10 +13,10 @@ import java.util.List;
 @Service
 public class MorphiaEmployeeRepository {
 
-    @Value("${spring.data.mongodb.host}")
+    //@Value("${spring.data.mongodb.host}")
     private String host = "localhost";
 
-    @Value("${spring.data.mongodb.port}")
+    //@Value("${spring.data.mongodb.port}")
     private Integer port = 27017;
 
     final Datastore datastore;

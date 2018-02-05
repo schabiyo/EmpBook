@@ -31,9 +31,10 @@ public class Employee extends BaseEntity {
     private String jobTitle;
     private String email;
     private Date birthDate;
-    private Decimal128 salary;
+    private Double salary;
     private Address address;
     private String twitterId;
+    private String cell;
 
     private @Version
     @JsonIgnore
@@ -42,7 +43,7 @@ public class Employee extends BaseEntity {
     private Employee() {this.employeeStatus = EmployeeStatus.UNKNOWN;}
 
 
-    public Employee(String firstName, String middleName, String lastName, String email, String jobTitle, Decimal128 salary, String twitter) {
+    public Employee(String firstName, String middleName, String lastName, String email, String jobTitle, Double salary, String twitter, String cell) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
@@ -51,9 +52,10 @@ public class Employee extends BaseEntity {
         this.employeeStatus = EmployeeStatus.ACTIVE;
         this.twitterId = twitter;
         this.salary = salary;
+        this.cell = cell;
     }
 
-    public Employee(String firstName, String middleName, String lastName, String email, String jobTitle, Decimal128 salary) {
+    public Employee(String firstName, String middleName, String lastName, String email, String jobTitle, Double salary) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
@@ -63,7 +65,7 @@ public class Employee extends BaseEntity {
         this.salary = salary;
     }
 
-    public Employee(String firstName, String middleName, String lastName, String email, String jobTitle, Decimal128 salary,EmployeeStatus status) {
+    public Employee(String firstName, String middleName, String lastName, String email, String jobTitle, Double salary,EmployeeStatus status) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
@@ -73,11 +75,15 @@ public class Employee extends BaseEntity {
         this.salary = salary;
     }
 
-    public Decimal128 getSalary() {
+    public String getCell() { return cell; }
+
+    public void setCell(String cell) { this.cell = cell; }
+
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(Decimal128 salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 
