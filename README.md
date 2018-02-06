@@ -31,14 +31,14 @@ To run the application in local mode change the configuration:
 
 Then run the following command:
 
+``` 
 ---
  spring:
    profiles: local
    data:
      mongodb:
        uri: mongodb://localhost:27017
- ``
-
+```
 
 ` $ mvn spring-boot:run `
 
