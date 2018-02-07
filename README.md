@@ -43,6 +43,7 @@ Then run the following command:
 ` $ mvn spring-boot:run `
 
 To run the application with Atlas, change the atlas profile and run start the application as follow:
+Make sure to add include your current IP in your Atlas project IP Whitelist.
 
 ``` 
 ---
